@@ -1,8 +1,11 @@
 # COT-DAPP
 
 1) Owner can mint limit tokens
+
 2) Owner can mint 5% tokens from totalSupply() per year
+
 3) 10B to Team vested (time is seting in the migration)
+
 4) 20B will go to owner wallet for sales manually
 
 (optional)
@@ -23,12 +26,17 @@
 # HOW MintNewTokens WORKS
 
 1) Token pass owner to MintNewTokens contract.
+
 2) Only MintNewTokens can call function mint in Token contract.
+
 3) Owner MintNewTokens contract can call function mint through MintNewTokens contract.
 
 So if we want create mint function based on vote we have four options
 
 1) Override function transferOwnership, that in the future to be able to transfer the owner to a contract with a voting function.
-2) Write this function immediately.
+
+2) Write vote function immediately.
+
 3) Leave the pool address function as a basis for voting.
+
 4) To make MintNewTokens as Upgradable Smart Contract.
