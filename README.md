@@ -26,7 +26,7 @@
 2) Only MintNewTokens can call function mint in Token contract.
 3) Owner MintNewTokens contract can call function mint through MintNewTokens contract.
 
-So if we want create mint function based on vote we have three options
+So if we want create mint function based on vote we have four options
 
 1) Override function transferOwnership, that in the future to be able to transfer the owner to a contract with a voting function.
 2) Write this function immediately.
