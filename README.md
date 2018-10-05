@@ -18,3 +18,17 @@
 
 (OPTIONAL)
 [Allow mint for pool address (if pool balance > total / 2) (comment) (video)](https://vk.com/videos223443924?z=video223443924_456239555%2Fpl_223443924_-2)
+
+
+HOW MintNewTokens WORKS
+
+1) Token pass owner to MintNewTokens contract.
+2) Only MintNewTokens can call function mint in Token contract.
+3) Owner MintNewTokens contract can call function mint through MintNewTokens contract.
+
+So if we want create mint function based on vote we have three options
+
+1) Override function transferOwnership, that in the future to be able to transfer the owner to a contract with a voting function.
+2) Write this function immediately.
+3) Leave the pool address function as a basis for voting.
+4) To make MintNewTokens as Upgradable Smart Contract.
