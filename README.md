@@ -12,7 +12,7 @@
 
 [Correct mint input limit (video)](https://vk.com/videos223443924?z=video223443924_456239559%2Fpl_223443924_-2)
 
-[Correct mint 5% per year (in our case 5 minutes) (no more no less) (video)](https://vk.com/videos223443924?z=video223443924_456239561%2Fpl_223443924_-2)
+[Correct mint 5% per year (in our case 5 minutes) (video)](https://vk.com/videos223443924?z=video223443924_456239561%2Fpl_223443924_-2)
 
 [Vesting (video)](https://vk.com/videos223443924?z=video223443924_456239556%2Fpl_223443924_-2)
 
