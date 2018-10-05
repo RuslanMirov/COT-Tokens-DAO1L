@@ -1,12 +1,3 @@
-/*
-TODO
-1. Transfer Tokens through Vesting contract
-
-2. Thinking how to implement 51% voiting (if pool address not a good decision)
-   it`s need because only this contract can call mint function
-   so we need think in advance.
-*/
-
 pragma solidity ^0.4.24;
 
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
