@@ -20,7 +20,7 @@
 [Allow mint for pool address (if pool balance > total / 2) (comment) (video)](https://vk.com/videos223443924?z=video223443924_456239555%2Fpl_223443924_-2)
 
 
-HOW MintNewTokens WORKS
+# HOW MintNewTokens WORKS
 
 1) Token pass owner to MintNewTokens contract.
 2) Only MintNewTokens can call function mint in Token contract.
