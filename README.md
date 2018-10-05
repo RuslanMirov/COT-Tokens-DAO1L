@@ -31,12 +31,14 @@
 
 3) Owner MintNewTokens contract can call function mint through MintNewTokens contract.
 
-So if we want create mint function based on vote we have four options
+So if we want create mint function based on vote we have five options
 
-1) Override function transferOwnership, that in the future to be able to transfer the owner to a contract with a voting function.
+1) Override function transferOwnership, that in the future to be able to transfer the owner to a contract with a voting function. (problem - the administrator of transferOwnership function can at any time designate himself as the owner, and start mint new tokens)
 
-2) Write vote function immediately.
+2) Write vote function immediately! 
 
-3) Leave the pool address function as a basis for voting.
+3) Leave the pool address function as a basis for voting. (it works reliably and safely)
 
-4) To make MintNewTokens as Upgradable Smart Contract.
+4) To make MintNewTokens as Upgradable Smart Contract and add 51% vote in future.
+
+5) Do not assign owner a contract, but this means that the owner can create new tokens in any quantity
