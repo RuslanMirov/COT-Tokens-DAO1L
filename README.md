@@ -31,7 +31,9 @@
 
 3) Owner MintNewTokens contract can call function mint through MintNewTokens contract.
 
-So if we want create mint function based on vote we have five options
+Such a scheme is safe, and we limit the ability of the owner to create new tokens.
+
+# So if we want create mint function based on vote we have five options
 
 1) Override function transferOwnership, that in the future to be able to transfer the owner to a contract with a voting function. (problem - the administrator of transferOwnership function can at any time designate himself as the owner, and start mint new tokens)
 
