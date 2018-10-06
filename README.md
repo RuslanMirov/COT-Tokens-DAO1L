@@ -1,4 +1,4 @@
-# COT-DAPP
+# COT-Tokens-DAO3L
 
 1) Owner can mint limit tokens
 
