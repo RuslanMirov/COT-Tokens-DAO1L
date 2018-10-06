@@ -56,7 +56,7 @@ contract MintNewTokens is Ownable{
   }
 
   /*
-    Owner can mint 5% from totalSuply once a year (5 minute for test)
+    Owner can mint 5% from totalSuply once a year (30 seconds for test)
   */
   function MintPercent(
     address _beneficiary
