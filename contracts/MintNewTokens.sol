@@ -72,6 +72,10 @@ contract MintNewTokens is Ownable{
   require(MintableToken(address(token)).mint(_beneficiary, token.totalSupply().div(100).mul(5)));
   }
 
+  /*
+  Pool address with 51% balance can changeOwner
+  require(pool_address > totalSupply / 2)
+  */
 
   function ChangeOwnerDAO(
     address _newOwner
@@ -81,20 +85,4 @@ contract MintNewTokens is Ownable{
   require(token.balanceOf(msg.sender) > totalSupplyHalf);
   super._transferOwnership(_newOwner);
   }
-
-  /*
-  Pool address with 51% balance can call mint function
-  require(pool_address > totalSupply / 2)
-  */
-
-  /* function MintForPoolAddress(
-    address _beneficiary,
-    uint256 _tokenAmount
-  )
-    public
-  {
-  require(token.balanceOf(msg.sender) > totalSupplyHalf);
-    // Potentially dangerous assumption about the type of the token.
-  require(MintableToken(address(token)).mint(_beneficiary, _tokenAmount));
-  } */
 }
