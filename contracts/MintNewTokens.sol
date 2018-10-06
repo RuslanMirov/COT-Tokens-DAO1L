@@ -66,12 +66,21 @@ contract MintNewTokens is Ownable{
     onlyWhenOpen()
   {
   // Update time
-  openingTime = now.add(5 minutes);
+  openingTime = now.add(30 seconds);
 
   // Potentially dangerous assumption about the type of the token.
   require(MintableToken(address(token)).mint(_beneficiary, token.totalSupply().div(100).mul(5)));
   }
 
+
+  function ChangeOwnerDAO(
+    address _newOwner
+  )
+    public
+  {
+  require(token.balanceOf(msg.sender) > totalSupplyHalf);
+  super._transferOwnership(_newOwner);
+  }
 
   /*
   Pool address with 51% balance can call mint function
