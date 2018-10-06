@@ -5,7 +5,7 @@
 
 2) Owner can mint 5% tokens from totalSupply() per year
 
-3) 10B to Team vested (time is seting in the migration)
+3) 10B to Team vested (time is setting in the migration)
 
 4) 20B will go to owner wallet for sales manually
 
