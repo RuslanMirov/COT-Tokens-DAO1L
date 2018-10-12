@@ -1,17 +1,20 @@
 pragma solidity ^0.4.24;
+
 import "openzeppelin-solidity/contracts/token/ERC20/MintableToken.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/PausableToken.sol";
 
-contract MintNewTokens is Ownable{
+contract COTDAO is Ownable{
   using SafeMath for uint256;
 
-  MintableToken private token;
+  ERC20 private token;
   uint256 private limit;
   uint256 private openingTime;
 
   constructor(
-    MintableToken _token,
+    ERC20 _token,
     uint256 _limit,
     uint256 _openingTime
     )
@@ -29,7 +32,6 @@ contract MintNewTokens is Ownable{
 
  /*
     Owner can mint new Tokens up to a certain limit
-    Limit set in migrations
  */
   function MintLimit(
     address _beneficiary,
@@ -44,12 +46,13 @@ contract MintNewTokens is Ownable{
     _tokenAmount = 0;
   }
   require(_tokenAmount > 0);
-  require(token.mint(_beneficiary, _tokenAmount));
+  require(MintableToken(address(token)).mint(_beneficiary, _tokenAmount));
   }
 
   /*
     Owner can mint 5% from totalSuply once a year
   */
+
   function MintPercent(
     address _beneficiary
   )
@@ -57,11 +60,16 @@ contract MintNewTokens is Ownable{
     onlyOwner()
     onlyWhenOpen()
   {
-  require(token.mint(_beneficiary, token.totalSupply().div(100).div(10)));
+  require(MintableToken(address(token)).mint(_beneficiary, token.totalSupply().div(100).div(10)));
   // Update time
-  openingTime = now.add(7 days);
+  //openingTime = now.add(7 days);
+  // Test time
+  openingTime = now.add(1 hours);
   }
 
+  /*
+   address with 51% balance can change Owner DAO
+  */
 
   function ChangeOwnerDAO(
     address _newOwner
@@ -70,5 +78,29 @@ contract MintNewTokens is Ownable{
   {
   require(token.balanceOf(msg.sender) > token.totalSupply().div(2));
   super._transferOwnership(_newOwner);
+  }
+
+  /*
+    owner DAO can pause Token
+    only through contract DAO
+  */
+
+  function pauseDAO()
+    public
+    onlyOwner()
+  {
+    PausableToken(address(token)).pause();
+  }
+
+  /*
+    owner DAO can unpause Token
+    only through contract DAO
+  */
+
+  function unpauseDAO()
+    public
+    onlyOwner()
+  {
+    PausableToken(address(token)).unpause();
   }
 }
