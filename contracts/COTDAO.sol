@@ -50,7 +50,7 @@ contract COTDAO is Ownable{
   }
 
   /*
-    Owner can mint 5% from totalSuply once a year
+    Owner can mint 0.01% from totalSuply per week
   */
 
   function MintPercent(
@@ -61,10 +61,7 @@ contract COTDAO is Ownable{
     onlyWhenOpen()
   {
   require(MintableToken(address(token)).mint(_beneficiary, token.totalSupply().div(100).div(10)));
-  // Update time
-  //openingTime = now.add(7 days);
-  // Test time
-  openingTime = now.add(1 hours);
+  openingTime = now.add(7 days);
   }
 
   /*
@@ -102,5 +99,16 @@ contract COTDAO is Ownable{
     onlyOwner()
   {
     PausableToken(address(token)).unpause();
+  }
+
+  /*
+     owner DAO can finish mint
+  */
+
+  function finishMint()
+    public
+    onlyOwner()
+  {
+    MintableToken(address(token)).finishMinting();
   }
 }

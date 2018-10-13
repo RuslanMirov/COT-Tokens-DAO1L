@@ -162,14 +162,14 @@ contract('COTDAO', function([_, wallet]) {
   });
 
   describe('MintLimit correct limit', function() {
-    it('dao limit maximum should be true', async function() {
+    it('Mint limit maximum should be true', async function() {
     const totalSuply = await this.token.totalSupply();
     await this.dao.MintLimit(wallet, ether(8000000000));
     const totalSuplyAfter = await this.token.totalSupply();
     totalSuplyAfter.should.be.bignumber.equal(ether(10000000000));
     });
 
-    it('MintLimit maximum + 1 should fail', async function() {
+    it('MintLimit maximum limit + 1 should fail', async function() {
     await this.dao.MintLimit(wallet, ether(8000000001)).should.be.rejectedWith(EVMRevert);
     });
   });
@@ -185,12 +185,12 @@ contract('COTDAO', function([_, wallet]) {
   });
 
   describe('PAUSE Token part 1', function() {
-    it('Owner can dao when pause should be fulfilled', async function() {
+    it('Owner call MintLimit when pause should be fulfilled', async function() {
     await this.dao.pauseDAO();
     await this.dao.MintLimit(wallet, ether(100)).should.be.fulfilled;
     });
 
-    it('Not owner try dao when pause should be fail', async function() {
+    it('Not owner try MintLimit when pause should be fail', async function() {
     await this.dao.pauseDAO();
     await this.dao.MintLimit(wallet, ether(100), { from: wallet }).should.be.rejectedWith(EVMRevert);
     });
@@ -249,6 +249,42 @@ contract('COTDAO', function([_, wallet]) {
 
     it('user try change token owner should be fail', async function() {
     await this.token.transferOwnership(wallet, { from:wallet }).should.be.rejectedWith(EVMRevert);
+    });
+  });
+
+  describe('Mint Limitation', function() {
+    it('Owner call token mint not through DAO should be fail', async function() {
+    await this.token.mint(_, ether(1)).should.be.rejectedWith(EVMRevert);
+    });
+
+    it('Owner try finish Minting not through DAO should be fail', async function() {
+    await this.token.finishMinting().should.be.rejectedWith(EVMRevert);
+    });
+  });
+
+  describe('STOP MINT FOREVER', function() {
+    it('Owner call stop mint should be fulfilled', async function() {
+    await this.dao.finishMint().should.be.fulfilled;
+    });
+
+    it('Not owner call stop mint should be fail', async function() {
+    await this.dao.finishMint({ from:wallet }).should.be.rejectedWith(EVMRevert);
+    });
+
+    it('OLD owner call stop mint should be fail', async function() {
+    await this.dao.transferOwnership(wallet, { from: _ });
+    await this.dao.finishMint({ from:_}).should.be.rejectedWith(EVMRevert);
+    });
+
+    it('Owner call MintLimit after finishMint should be fail', async function() {
+    await this.dao.finishMint().should.be.fulfilled;
+    await this.dao.MintLimit(_, ether(1)).should.be.rejectedWith(EVMRevert);
+    });
+
+    it('Owner call MintPercent after finishMint should be fail', async function() {
+    await this.dao.finishMint().should.be.fulfilled;
+    await increaseTimeTo(this.openingdaoTime);
+    await this.dao.MintPercent(_).should.be.rejectedWith(EVMRevert);
     });
   });
 

@@ -19,11 +19,19 @@ module.exports = function(deployer) {
   const totalSupply = 2000000000000000000000000000; // 2 000 000 000
   const limit = 10000000000000000000000000000; // 10 000 000 000
 
-  const start = 1538568527; // Unix Data
-  const cliff = _duration.years(1); // Time in seconds
-  const duration = _duration.years(4); // Time in seconds
+  // Test deploy in ROPSTEN
+  const start = 1539444863; // Unix Data (SEND RIGHT Data)
+  const cliff = _duration.minutes(1); // Time in seconds
+  const duration = _duration.minutes(4); // Time in seconds
+
+  // Deploy in MAIN NET
+  //const start = 1538568527; // Unix Data (SEND RIGHT Data)
+  //const cliff = _duration.years(1); // Time in seconds
+  //const duration = _duration.years(4); // Time in seconds
+
   const revocable = false; // Owner can not return tokens until time runs out
   const timeNow = Math.floor(Date.now() / 1000);
+
   // Deplot in Ropsten
   const openingMintTime = timeNow + _duration.hours(1);
   // Deplot in MAIN
@@ -35,7 +43,9 @@ module.exports = function(deployer) {
   const amount = 1000000000000000000000000000; // 1 000 000 000
 
   // SEND ALL Tokens in Ropsten test deploy
-  const GaryAddress = "0x7035fb83a7c18289b94e443170bee56b92df8e46";
+  // const GaryAddress = "0x7035fb83a7c18289b94e443170bee56b92df8e46";
+
+  const GaryAddress = "0x5ff165B03Dfd3a817495132ddB8F6d0d6CBff73a";
 
 
 
