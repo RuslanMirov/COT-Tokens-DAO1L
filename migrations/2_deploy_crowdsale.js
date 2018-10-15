@@ -1,6 +1,7 @@
 const Token = artifacts.require("./COT.sol");
 const VestingToken = artifacts.require("VestingToken");
 const COTDAO = artifacts.require("COTDAO");
+const COTCrowdsale = artifacts.require("COTCrowdsale");
 
 const _duration = {
   seconds: function (val) { return val; },
@@ -13,62 +14,56 @@ const _duration = {
 
 
 module.exports = function(deployer) {
+  // PARAMETRS
+
+  //Token
   const name = "CoTrader";
   const symbol = "COT";
   const decimals = 18;
-  const totalSupply = 2000000000000000000000000000; // 2 000 000 000
-  const limit = 10000000000000000000000000000; // 10 000 000 000
-
-  // Test deploy in ROPSTEN
-  const start = 1539444863; // Unix Data (SEND RIGHT Data)
-  const cliff = _duration.minutes(1); // Time in seconds
-  const duration = _duration.minutes(4); // Time in seconds
-
-  // Deploy in MAIN NET
-  //const start = 1538568527; // Unix Data (SEND RIGHT Data)
-  //const cliff = _duration.years(1); // Time in seconds
-  //const duration = _duration.years(4); // Time in seconds
-
+  const totalSupply = 10000000000000000000000000000; // 10 000 000 000
+  //Crowdsale
+  const rate = 500;
+  const wallet = "0x627306090abab3a6e1400e9345bc60c78a8bef57"; // TODO: Replace me
+  // Vesting
+  const start = 1538568527; // Unix Data TODO: (SEND RIGHT Data)
+  const cliff = _duration.years(1); // Time in seconds
+  const duration = _duration.years(4); // Time in seconds
   const revocable = false; // Owner can not return tokens until time runs out
   const timeNow = Math.floor(Date.now() / 1000);
-
-  // Deplot in Ropsten
-  const openingMintTime = timeNow + _duration.hours(1);
-  // Deplot in MAIN
-  //const openingMintTime = timeNow + _duration.days(7);
-
-  // GaryAddress pass in Vesting contract
+  // TeamAddress pass in Vesting contract
+  const TeamAddress = "0x7035fb83a7c18289b94e443170bee56b92df8e46"; //TODO: Replace me
   // Tokens for Vesting contract
-  // limit * 0.1
-  const amount = 1000000000000000000000000000; // 1 000 000 000
-
-  // SEND ALL Tokens in Ropsten test deploy
-  // const GaryAddress = "0x7035fb83a7c18289b94e443170bee56b92df8e46";
-
-  const GaryAddress = "0x5ff165B03Dfd3a817495132ddB8F6d0d6CBff73a";
+  const amount = 10000000000000000000000000000; // 10 000 000 000
+  // DAO
+  const openingMintTime = timeNow + _duration.days(7);
+  const limit = 100000000000000000000000000000; // 100 000 000 000
 
 
+  // DEPLOY
 
-  deployer.deploy(VestingToken, GaryAddress, start, cliff, duration, revocable, {gas:4712388}).then(() =>{
-  return deployer.deploy(Token, name, symbol, decimals, totalSupply, {gas:4712388}).then(() => {
+  deployer.deploy(VestingToken, TeamAddress, start, cliff, duration, revocable).then(() =>{
+  return deployer.deploy(Token, name, symbol, decimals, totalSupply).then(() => {
     const token = Token.at(Token.address);
     // Transfer 10B to Vesting contract
     token.transfer(VestingToken.address, amount);
-  }).then(() => {
-    return deployer.deploy(COTDAO, Token.address, limit, openingMintTime, {gas:5712388});
-  }).then(() => {
+  })
+  .then(()=>{
     const token = Token.at(Token.address);
-    // Only contract can call mint function
-    token.transferOwnership(COTDAO.address);
+    // Block tokens
+    token.pause();
+  })
+  .then(()=>{
+    // Deploy DAO
+    return deployer.deploy(COTDAO, Token.address, limit, openingMintTime);
+  })
+  .then(() => {
+    //Deploy sale
+    return deployer.deploy(COTCrowdsale, rate, wallet, Token.address, COTDAO.address, limit)
+  })
+  .then(() => {
+    const token = Token.at(Token.address);
+    // transferOwnership of token to crowdsale
+    token.transferOwnership(COTCrowdsale.address);
   });
-  //.then(() => {
-  //   const token = Token.at(Token.address);
-  //   // Send rest tokens to Gary
-  //   token.transfer(GaryAddress, amount);
-  // }).then(() => {
-  //   const mint = COTDAO.at(COTDAO.address);
-  //   // Assign Gary owner
-  //   mint.transferOwnership(GaryAddress);
-  // });
-  });
+});
 };

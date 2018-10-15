@@ -20,8 +20,8 @@ contract('COTDAO', function([_, wallet]) {
     this.name = "CoTrader";
     this.symbol = "COT";
     this.decimals = 18;
-    // ether convert 2 000 000 000 COT to 2000000000000000000000000 hex
-    this.totalSupply = ether(2000000000);
+    // ether convert 10 000 000 000 COT to 10000000000000000000000000000 hex
+    this.totalSupply = ether(10000000000);
 
     // Deploy Token
     this.token = await Token.new(
@@ -32,7 +32,7 @@ contract('COTDAO', function([_, wallet]) {
    );
 
      // dao config
-     this.limit = ether(10000000000), // 10 000 000 000
+     this.limit = ether(100000000000), // 100 000 000 000
      this.timeNow = Math.floor(Date.now() / 1000);
      this.openingdaoTime = latestTime() + duration.days(7); // 1 minute
 
@@ -47,14 +47,14 @@ contract('COTDAO', function([_, wallet]) {
     });
 
   describe('INIT with correct values', function() {
-    it('totalSuply 2000000000 COT', async function() {
+    it('totalSuply 10000000000 COT', async function() {
     const total = await this.token.totalSupply();
-    total.should.be.bignumber.equal(ether(2000000000));
+    total.should.be.bignumber.equal(ether(10000000000));
     });
 
-    it('owner balance 2000000000 COT', async function() {
+    it('owner balance 10000000000 COT', async function() {
     const balanceOwner = await this.token.balanceOf(_);
-    balanceOwner.should.be.bignumber.equal(ether(2000000000));
+    balanceOwner.should.be.bignumber.equal(ether(10000000000));
     });
 
     it('Owner DAO is _', async function() {
@@ -65,6 +65,11 @@ contract('COTDAO', function([_, wallet]) {
 
   describe('MintLimit', function() {
     it('MintLimit call owner should be fulfilled', async function() {
+    await this.dao.MintLimit(wallet, ether(100)).should.be.fulfilled;
+    });
+
+    it('MintLimit work when pause should be fulfilled', async function() {
+    await this.dao.pauseDAO();
     await this.dao.MintLimit(wallet, ether(100)).should.be.fulfilled;
     });
 
@@ -83,7 +88,7 @@ contract('COTDAO', function([_, wallet]) {
     });
 
     it('Call MintLimit with input > limit should be fail', async function() {
-    await this.dao.MintLimit(wallet, ether(10000000000)).should.be.rejectedWith(EVMRevert);
+    await this.dao.MintLimit(wallet, ether(100000000000)).should.be.rejectedWith(EVMRevert);
     });
 
     it('totalSuply increases after call MintLimit function', async function() {
@@ -99,18 +104,24 @@ contract('COTDAO', function([_, wallet]) {
     await this.dao.MintPercent(wallet).should.be.rejectedWith(EVMRevert);
     });
 
+    it('MintPercent work when pause should be fulfilled', async function() {
+    await this.dao.pauseDAO();
+    await increaseTimeTo(this.openingdaoTime);
+    await this.dao.MintPercent(wallet).should.be.fulfilled;
+    });
+
     it('Call MintPercent at the allowed time should be fulfilled', async function() {
     await increaseTimeTo(this.openingdaoTime);
     await this.dao.MintPercent(wallet).should.be.fulfilled;
     });
 
-    it('Correct percent 0.1% per week first call is 2 000 000 (curent totalSupply() / 100 / 10))', async function() {
+    it('Correct percent 0.1% per week first call is 10 000 000 (curent totalSupply() / 100 / 10))', async function() {
     await increaseTimeTo(this.openingdaoTime);
     const oldTotal = await this.token.totalSupply();
     await this.dao.MintPercent(wallet);
     const newTotal = await this.token.totalSupply();
     const sum = await web3.fromWei(newTotal, 'ether') - web3.fromWei(oldTotal, 'ether');
-    assert.equal(sum, 2000000);
+    assert.equal(sum, 10000000);
     });
 
     it('New Owner call dao percent should be fulfilled', async function() {
@@ -146,17 +157,17 @@ contract('COTDAO', function([_, wallet]) {
     });
 
     it('Call ChangeOwnerDAO from owner with 0 tokens on balance should be fail', async function() {
-    await this.token.transfer(wallet, ether(1000000000));
+    await this.token.transfer(wallet, ether(10000000000));
     await this.dao.ChangeOwnerDAO(wallet, { from: _ }).should.be.rejectedWith(EVMRevert);
     });
 
     it('Call ChanheOwner from address with balance === no more half should fail', async function() {
-    await this.token.transfer(wallet, ether(1000000000));
+    await this.token.transfer(wallet, ether(5000000000));
     await this.dao.ChangeOwnerDAO(wallet, { from: wallet }).should.be.rejectedWith(EVMRevert);
     });
 
     it('Call ChanheOwner from address with balance > totalSuply / 2 + 1 token should be fulfilled', async function() {
-    await this.token.transfer(wallet, ether(1000000001));
+    await this.token.transfer(wallet, ether(5000000001));
     await this.dao.ChangeOwnerDAO(wallet, { from: wallet }).should.be.fulfilled;
     });
   });
@@ -164,13 +175,13 @@ contract('COTDAO', function([_, wallet]) {
   describe('MintLimit correct limit', function() {
     it('Mint limit maximum should be true', async function() {
     const totalSuply = await this.token.totalSupply();
-    await this.dao.MintLimit(wallet, ether(8000000000));
+    await this.dao.MintLimit(wallet, ether(90000000000));
     const totalSuplyAfter = await this.token.totalSupply();
-    totalSuplyAfter.should.be.bignumber.equal(ether(10000000000));
+    totalSuplyAfter.should.be.bignumber.equal(ether(100000000000));
     });
 
     it('MintLimit maximum limit + 1 should fail', async function() {
-    await this.dao.MintLimit(wallet, ether(8000000001)).should.be.rejectedWith(EVMRevert);
+    await this.dao.MintLimit(wallet, ether(90000000001)).should.be.rejectedWith(EVMRevert);
     });
   });
 
