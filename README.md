@@ -25,9 +25,7 @@
 
 # HOW DAO WORKS
 
-0) Crowdsale contract transferOnwership of Token contract to DAO contract
-
-1) Token pass owner to DAO contract.
+1) Crowdsale contract transferOnwership of Token contract to DAO contract
 
 2) Only DAO can call function mint in Token contract.
 
