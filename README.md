@@ -20,13 +20,22 @@
 
 [Allow change owner for pool address (if pool balance > total / 2) (comment) (video)](https://vk.com/videos223443924?z=video223443924_456239566%2Fpl_223443924_-2)
 
+[transferOwnership Token from crowdsale to DAO (video)](https://vk.com/video?z=video223443924_456239580%2Fpl_cat_updates)
 
-# HOW MintNewTokens WORKS
 
-1) Token pass owner to MintNewTokens contract.
+# HOW DAO WORKS
 
-2) Only MintNewTokens can call function mint in Token contract.
+0) Crowdsale contract transferOnwership of Token contract to DAO contract
 
-3) Owner MintNewTokens contract can call function mint through MintNewTokens contract.
+1) Token pass owner to DAO contract.
 
-Such a scheme is safe, and we limit the ability of the owner to create new tokens.
+2) Only DAO can call function mint in Token contract.
+
+3) Owner DAO contract can call function mint through DAO contract.
+
+4) address with 51% can change Owner
+
+# test
+
+truffle migrate --reset
+truffle test
