@@ -35,5 +35,9 @@
 
 # test
 
-truffle migrate --reset
-truffle test
+1) truffle migrate --reset
+2) truffle test
+
+# Deploy
+1) Remove bild folder
+2) truffle migrate compile-all --network YOUR NETWORK
