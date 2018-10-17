@@ -38,7 +38,7 @@
 2) cd
 3) npm i --only=dev
 
-# test
+# Test
 
 1) truffle migrate
 2) truffle test
