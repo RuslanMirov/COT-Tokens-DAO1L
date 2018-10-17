@@ -33,9 +33,14 @@
 
 4) address with 51% can change Owner
 
+# Install
+1) clone repo
+2) cd
+3) npm i --only=dev
+
 # test
 
-1) truffle migrate --reset
+1) truffle migrate
 2) truffle test
 
 # Deploy
