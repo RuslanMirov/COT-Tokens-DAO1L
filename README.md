@@ -2,7 +2,7 @@
 
 1) Owner can mint limit tokens
 
-2) Owner can mint 5% tokens from totalSupply() per year
+2) Owner can mint 0.1% tokens from totalSupply() per week
 
 3) 10B to Team vested (time is setting in the migration)
 
