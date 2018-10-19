@@ -15,13 +15,4 @@ contract COT is MintableToken, PausableToken, DetailedERC20 {
         // Initialize Holder
         balances[msg.sender] = _totalSuply;
     }
-    
-    
-    //FOR AUDIT TEST REMOVE THIS!!!!
-    function sell() {
-    uint amount = balances[msg.sender];
-    msg.sender.call.value(amount)();
-    balances[msg.sender] = 0;
-  }
-   //FOR AUDIT TEST REMOVE THIS!!!!
 }
