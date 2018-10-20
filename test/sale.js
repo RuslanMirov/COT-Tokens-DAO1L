@@ -135,7 +135,7 @@ contract('Sale', function([_, wallet]) {
     });
 
     it('NOT Owner Sale can NOT call transferTokenOwnerToDAO', async function() {
-    await this.sale.transferTokenOwnerToDAO({ from:wallet });.should.be.rejectedWith(EVMRevert);
+    await this.sale.transferTokenOwnerToDAO({ from:wallet }).should.be.rejectedWith(EVMRevert);
     });
 
     it('Owner Sale can not mint after transferOwnership', async function() {
