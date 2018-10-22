@@ -8,7 +8,7 @@ import "openzeppelin-solidity/contracts/token/ERC20/PausableToken.sol";
 contract COTDAO is Ownable{
   using SafeMath for uint256;
 
-  ERC20   public token;
+  ERC20   private token;
   uint256 private limit;
   uint256 private openingTime;
   uint256 private half;
@@ -30,6 +30,14 @@ contract COTDAO is Ownable{
   modifier onlyWhenOpen {
     require(block.timestamp >= openingTime);
     _;
+  }
+
+ /*
+  @dev check the correctness of address
+ */
+
+  function TokenAddress() public view returns (address) {
+    return token;
   }
 
  /*

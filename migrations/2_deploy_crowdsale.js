@@ -63,13 +63,13 @@ module.exports = function(deployer) {
 
     await deployer.deploy(COTDAO, Token.address, limit, openingMintTime, half);
     // transferOwnership of DAO to Gary
-    const dao = await Token.at(COTDAO.address); //TODO: uncoment me
-    await dao.transferOwnership(GaryAddress); //TODO: uncoment me
+  //  const dao = await Token.at(COTDAO.address); //TODO: uncoment me
+  //  await dao.transferOwnership(GaryAddress); //TODO: uncoment me
 
     await deployer.deploy(COTCrowdsale, rate, ICOWallet, Token.address, COTDAO.address, limit, cap, percent, ICOrate);
     // transferOwnership of Sale to Gary
-    const sale = await Token.at(COTCrowdsale.address); //TODO: uncoment me
-    await sale.transferOwnership(GaryAddress); //TODO: uncoment me
+  //  const sale = await Token.at(COTCrowdsale.address); //TODO: uncoment me
+    //await sale.transferOwnership(GaryAddress); //TODO: uncoment me
     // transferOwnership of token to sale contract
     await token.transferOwnership(COTCrowdsale.address);
   })

@@ -7,10 +7,10 @@ import "openzeppelin-solidity/contracts/crowdsale/validation/CappedCrowdsale.sol
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 contract COTCrowdsale is Crowdsale, MintedCrowdsale, CappedCrowdsale, Ownable{
+
  using SafeMath for uint256;
 
- address public DAOaddress;
- ERC20   public token;
+ address private DAOaddress;
  uint256 private limit;
  uint256 private percent;
  uint256 private ICOrate;
@@ -30,10 +30,17 @@ contract COTCrowdsale is Crowdsale, MintedCrowdsale, CappedCrowdsale, Ownable{
   public
   {
     DAOaddress = _DAOaddress;
-    token = _token;
     limit = _limit;
     percent = _percent;
     ICOrate = _ICOrate;
+  }
+
+  /*
+    @dev check the correctness of address
+  */
+
+  function DAOAddress() public view returns (address) {
+    return DAOaddress;
   }
 
   /*

@@ -80,8 +80,13 @@ contract('Sale', function([_, wallet]) {
     });
 
     it('Correct DAO address in sale contract', async function() {
-    const DAOaddress = await this.sale.DAOaddress();
+    const DAOaddress = await this.sale.DAOAddress();
     assert.equal(DAOaddress, this.dao.address);
+    });
+
+    it('Correct Token address in sale contract', async function() {
+    const TokenAddress = await this.sale.token();
+    assert.equal(TokenAddress, this.token.address);
     });
 
     it('Correct init rate (PrePreSale by default) (25%)', async function() {
